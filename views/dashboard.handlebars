@@ -6,91 +6,123 @@
         </div>
     </div>
     <!--Profile pic and username-->
-<div class="row">
-    <div class="col-md-4">
-            <img src="{{imgURL}}" class="rounded float-left dashPic" >
+    <div class="row">
+        <div class="col-md-4">
+            <img src="{{imgURL}}" class="rounded float-left dashPic">
+        </div>
+
+        <div class="col-md-8">
+            <h3>{{name}}</h3>
+        </div>
     </div>
-    
-    <div class="col-md-8">
-        <h3>{{name}}</h3>
-    </div>
-</div>
 </div>
 
 <!--Due Now row-->
 <div class="row">
-    <div class="col-md-6">
-        <h5><strong></strong>Due Now</strong></h5>
-        <h6>{{dueNow}}</h6>
+    <div class="col-md-12">
+        <h5><strong></strong>TODO List</strong></h5>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Details</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Difficulty</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+
+
+            <tbody>
+
+                {{#each todos}}
+                <tr>
+                    <td>{{this.id}}</td>
+                    <td>{{this.name}}</td>
+                    <td>{{this.details}}</td>
+                    <td>{{this.location}}</td>
+                    <td>{{this.deadline}}</td>
+                    <td>{{this.category}}</td>
+                    <td>{{this.difficulty}}</td>
+                    <td> <button type="button" class="btn btn-info details">Details</button>
+
+                        <button type="button" class="btn btn-success completed">Completed</button>
+
+                        <button type="button" class="btn btn-primary sms">SMS</button>
+
+                        <button type="button" class="btn btn-danger remove">Remove</button></td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
     </div>
 
     <div class="col-md-6">
-            <button type="button" class="btn btn-info details">Details</button>
 
-            <button type="button" class="btn btn-success completed">Completed</button>
-
-            <button type="button" class="btn btn-primary sms">SMS</button>
-
-            <button type="button" class="btn btn-danger remove">Remove</button>
     </div>
 </div>
 
 <!--Google places and friends schedules-->
 <div class=row>
-        <div class="col-md-6">
-<div id="googleAPI">
+    <div class="col-md-6">
+        <div id="googleAPI">
 
-</div>
-         </div>
+        </div>
+    </div>
 
-         <div class="col-md-6">
-             <p><strong>Friend's Schedules</strong></p>
-            
-             <div class="friendContainer">
-                 Append friends + activity + SMS button here
-             </div>
-         </div>
+    <div class="col-md-6">
+        <p><strong>Friend's Schedules</strong></p>
+
+        <div class="friendContainer">
+            Append friends + activity + SMS button here
+        </div>
+    </div>
 
 </div>
 
 <!--Upcoming schedules-->
 
 <div class="row">
-    <div class="col-md-12"> 
+    <div class="col-md-12">
         <h5>Upcoming</h5>
         append rest of schedules + all buttons here
     </div>
 </div>
 
-<!--add task and friend lookup--> 
+<!--add task and friend lookup-->
 
 <div class="row">
     <div class="col-md-6">
-<button type="button" class="btn btn-primary addTask" data-target="#addTaskModal" data-whatever="NewTask">Add Task</button> 
+       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Add Task
+</button>
     </div>
 
     <div class="col-md-6">
-            <div class="search-container">
-                    <form action="/action_page.php">
-                      <input type="text" placeholder="Search Friends.." name="search">
-                      <button type="submit"><i class="fa fa-search"></i></button>
-                    </form>
+        <div class="search-container">
+            <form action="/action_page.php">
+                <input type="text" placeholder="Search Friends.." name="search">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
     </div>
-</div>
 
-<!--POP UPS-->
-<!--ADD TASK POP-UPS (MODALS)-->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="newTaskModalLabel">New Task</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <form>
+    <!--POP UPS-->
+    <!--ADD TASK POP-UPS (MODALS)-->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add New Task</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+    <form>
                 <div class="form-group">
                   <label for="name" class="col-form-label">Name</label>
                   <input type="text" class="form-control" id="name">
@@ -109,9 +141,15 @@
                           </div>
                           <div class="form-group">
                                 <label for="category" class="col-form-label">Category</label>
-                                <input type="text" class="form-control" id="category">
+                                     <select id="category">
+                                   
+                                    <option value="0">Household</option>
+                                    <option value="1">Business</option>
+                                    <option value="2">Personal</option>
+                                   
+                                  </select>
                               </div>
-
+                    <label for="difficulty" class="col-form-label">Difficulty</label>
                               <select id="difficulty">
                                     <option value="" disabled selected>Select your option</option>
                                     <option value=""></option>
@@ -127,11 +165,14 @@
                                     <option value="10">10 (Hard)</option>
                                   </select>
               </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Add Task</button>
-            </div>
-          </div>
-        </div>
       </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
