@@ -38,7 +38,7 @@
 
             <tbody>
 
-                {{#each todos}}
+                {{#each todos}} {{#unless completed}}
                 <tr>
                     <td>{{this.id}}</td>
                     <td>{{this.name}}</td>
@@ -47,19 +47,58 @@
                     <td>{{this.deadline}}</td>
                     <td>{{this.category}}</td>
                     <td>{{this.difficulty}}</td>
-                    <td> <button type="button" class="btn btn-info details">Details</button>
+                    <td> <button type="button" data-id={{this.id}} class="btn btn-info details">Details</button>
 
-                        <button type="button" class="btn btn-success completed">Completed</button>
+                        <button type="button" data-complete={{this.completed}} data-id={{this.id}} class="btn btn-success completed">Completed</button>
 
-                        <button type="button" class="btn btn-primary sms">SMS</button>
+                        <button type="button" data-id={{this.id}} class="btn btn-primary sms">SMS</button>
 
-                        <button type="button" class="btn btn-danger remove">Remove</button></td>
+                        <button type="button" data-id={{this.id}} class="btn btn-danger remove">Remove</button></td>
                 </tr>
-                {{/each}}
+                {{/unless}} {{/each}}
             </tbody>
         </table>
     </div>
+    <div class="col-md-12">
+        <h5><strong></strong>Completed TODO List</strong></h5>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Details</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Difficulty</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
 
+
+            <tbody>
+
+                {{#each todos}} {{#if completed}}
+                <tr>
+                    <td>{{this.id}}</td>
+                    <td>{{this.name}}</td>
+                    <td>{{this.details}}</td>
+                    <td>{{this.location}}</td>
+                    <td>{{this.deadline}}</td>
+                    <td>{{this.category}}</td>
+                    <td>{{this.difficulty}}</td>
+                    <td> <button type="button" data-id={{this.id}} class="btn btn-info details">Details</button>
+
+                        <button type="button" data-complete={{this.completed}} data-id={{this.id}} class="btn btn-success completed">Uncompleted</button>
+
+                        <button type="button" data-id={{this.id}} class="btn btn-primary sms">SMS</button>
+
+                        <button type="button" data-id={{this.id}} class="btn btn-danger remove">Remove</button></td>
+                </tr>
+                {{/if}} {{/each}}
+            </tbody>
+        </table>
+    </div>
     <div class="col-md-6">
 
     </div>
@@ -91,14 +130,44 @@
         append rest of schedules + all buttons here
     </div>
 </div>
+<div class="col-md-12">
+    <h5><strong></strong>Recomended TODO List</strong></h5>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Category</th>
+            </tr>
+        </thead>
 
+
+        <tbody>
+
+            {{#each recom}}
+            <tr>
+                <td>{{this.id}}</td>
+                <td>{{this.name}}</td>
+                <td>{{this.category}}</td>
+                <td> <button type="button" class="btn btn-info details">Details</button>
+
+                    <button type="button" class="btn btn-success completed">Completed</button>
+
+                    <button type="button" class="btn btn-primary sms">SMS</button>
+
+                    <button type="button" class="btn btn-danger remove">Remove</button></td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
 <!--add task and friend lookup-->
 
 <div class="row">
     <div class="col-md-6">
-       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  Add Task
-</button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            Add Task
+        </button>
     </div>
 
     <div class="col-md-6">
@@ -112,67 +181,132 @@
 
     <!--POP UPS-->
     <!--ADD TASK POP-UPS (MODALS)-->
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add New Task</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-    <form>
-                <div class="form-group">
-                  <label for="name" class="col-form-label">Name</label>
-                  <input type="text" class="form-control" id="name">
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add New Task</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <div class="form-group">
-                  <label for="details" class="col-form-label">Details</label>
-                  <textarea class="form-control" id="details"></textarea>
-                </div>
-                <div class="form-group">
-                        <label for="location" class="col-form-label">Location</label>
-                        <input type="text" class="form-control" id="Location">
-                      </div>
-                      <div class="form-group">
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="name" class="col-form-label">Name</label>
+                            <input type="text" class="form-control" id="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="details" class="col-form-label">Details</label>
+                            <textarea class="form-control" id="details"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="location" class="col-form-label">Location</label>
+                            <input type="text" class="form-control" id="location">
+                        </div>
+                        <div class="form-group">
                             <label for="deadline" class="col-form-label">Deadline</label>
                             <input type="text" class="form-control" id="deadline">
-                          </div>
-                          <div class="form-group">
-                                <label for="category" class="col-form-label">Category</label>
-                                     <select id="category">
-                                   
-                                    <option value="0">Household</option>
-                                    <option value="1">Business</option>
-                                    <option value="2">Personal</option>
-                                   
-                                  </select>
-                              </div>
-                    <label for="difficulty" class="col-form-label">Difficulty</label>
-                              <select id="difficulty">
-                                    <option value="" disabled selected>Select your option</option>
-                                    <option value=""></option>
-                                    <option value="1">1 (Easy)</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
-                                    <option value="8">8</option>
-                                    <option value="9">9</option>
-                                    <option value="10">10 (Hard)</option>
-                                  </select>
-              </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Add</button>
-      </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="category" class="col-form-label">Category</label>
+                            <select id="category">
+
+                                <option value="Household">Household</option>
+                                <option value="Business">Business</option>
+                                <option value="Personal">Personal</option>
+
+                            </select>
+                        </div>
+                        <label for="difficulty" class="col-form-label">Difficulty</label>
+                        <select id="difficulty">
+                            <option value="" disabled selected>Select your option</option>
+                            <option value="1">1 (Easy)</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10 (Hard)</option>
+                        </select>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" onclick="add_todo()" class="btn btn-primary">Add</button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
+    <script>
 
+        $(".completed").on("click", function (event) {
+            var id = $(this).data("id");
 
+            var comp = $(this).data("complete");
+            console.log(comp+"    "+id)
+            if (comp == true) {
+                var newComp = {
+                    completed: false
+                }
+            } else {
+                var newComp = {
+                    completed: true
+                }
+            }
+
+            // Send the PUT request.
+            $.ajax("/api/todo/" + id, {
+                type: "PUT",
+                data: newComp
+            }).then(
+                function () {
+                    location.reload();
+                }
+            );
+        });
+
+        $(".remove").on("click", function (event) {
+            var id = $(this).data("id");
+
+            $.ajax({
+                method: "DELETE",
+                url: "/api/todo/" + id
+            }).then(
+                function () {
+                    location.reload();
+                }
+            );
+        });
+
+        function add_todo() {
+            event.preventDefault();
+            var name = $('#name').val().trim();
+            var details = $('#details').val().trim();
+            var location = $('#location').val().trim();
+            var date = new Date;
+            var category = $('#category').val().trim();
+            var difficulty = $('#difficulty').val().trim();
+            var url = "/api/todo";
+            var data = {
+                name: name,
+                details: details,
+                location: location,
+                deadline: date,
+                category: category,
+                difficulty: difficulty,
+                completed: false
+            };
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: data,
+            });
+            window.location.reload();
+        };
+    </script>

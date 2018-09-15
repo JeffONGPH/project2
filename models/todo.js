@@ -5,7 +5,8 @@ module.exports = function(sequelize, DataTypes) {
     location: DataTypes.TEXT,
     deadline: DataTypes.DATE,
     category: DataTypes.STRING,
-    difficulty: DataTypes.INTEGER
+    difficulty: DataTypes.INTEGER,
+    completed: DataTypes.BOOLEAN
   });
 
   TODO.associate = function(models) {
