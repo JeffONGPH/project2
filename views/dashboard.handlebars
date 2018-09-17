@@ -38,24 +38,24 @@
 
             <tbody>
 
-                {{#each todos}} {{#unless completed}}
+                {{#each todos}}
                 <tr>
-                    <td>{{this.id}}</td>
-                    <td>{{this.name}}</td>
-                    <td>{{this.details}}</td>
-                    <td>{{this.location}}</td>
-                    <td>{{this.deadline}}</td>
-                    <td>{{this.category}}</td>
-                    <td>{{this.difficulty}}</td>
-                    <td> <button type="button" data-id={{this.id}} class="btn btn-info details">Details</button>
+                    <td>{{this.count}}</td>
+                    <td>{{this.todo.name}}</td>
+                    <td>{{this.todo.details}}</td>
+                    <td>{{this.todo.location}}</td>
+                    <td>{{this.todo.deadline}}</td>
+                    <td>{{this.todo.category}}</td>
+                    <td>{{this.todo.difficulty}}</td>
+                    <td> <button type="button" data-id={{this.todo.id}} class="btn btn-info details">Details</button>
 
-                        <button type="button" data-complete={{this.completed}} data-id={{this.id}} class="btn btn-success completed">Completed</button>
+                        <button type="button" data-complete={{this.todo.completed}} data-id={{this.todo.id}} class="btn btn-success completed">Completed</button>
 
-                        <button type="button" data-id={{this.id}} class="btn btn-primary sms">SMS</button>
+                        <button type="button" data-id={{this.todo.id}} class="btn btn-primary sms">SMS</button>
 
-                        <button type="button" data-id={{this.id}} class="btn btn-danger remove">Remove</button></td>
+                        <button type="button" data-id={{this.todo.id}} class="btn btn-danger remove">Remove</button></td>
                 </tr>
-                {{/unless}} {{/each}}
+                 {{/each}}
             </tbody>
         </table>
     </div>
@@ -78,24 +78,24 @@
 
             <tbody>
 
-                {{#each todos}} {{#if completed}}
+                {{#each todocoms}} 
                 <tr>
-                    <td>{{this.id}}</td>
-                    <td>{{this.name}}</td>
-                    <td>{{this.details}}</td>
-                    <td>{{this.location}}</td>
-                    <td>{{this.deadline}}</td>
-                    <td>{{this.category}}</td>
-                    <td>{{this.difficulty}}</td>
-                    <td> <button type="button" data-id={{this.id}} class="btn btn-info details">Details</button>
+                    <td>{{this.count}}</td>
+                    <td>{{this.todo.name}}</td>
+                    <td>{{this.todo.details}}</td>
+                    <td>{{this.todo.location}}</td>
+                    <td>{{this.todo.deadline}}</td>
+                    <td>{{this.todo.category}}</td>
+                    <td>{{this.todo.difficulty}}</td>
+                    <td> <button type="button" data-id={{this.todo.id}} class="btn btn-info details">Details</button>
 
-                        <button type="button" data-complete={{this.completed}} data-id={{this.id}} class="btn btn-success completed">Uncompleted</button>
+                        <button type="button" data-complete={{this.todo.completed}} data-id={{this.todo.id}} class="btn btn-success completed">Uncompleted</button>
 
-                        <button type="button" data-id={{this.id}} class="btn btn-primary sms">SMS</button>
+                        <button type="button" data-id={{this.todo.id}} class="btn btn-primary sms">SMS</button>
 
-                        <button type="button" data-id={{this.id}} class="btn btn-danger remove">Remove</button></td>
+                        <button type="button" data-id={{this.todo.id}} class="btn btn-danger remove">Remove</button></td>
                 </tr>
-                {{/if}} {{/each}}
+             {{/each}}
             </tbody>
         </table>
     </div>
@@ -146,7 +146,45 @@
 
             {{#each recom}}
             <tr>
-                <td>{{this.id}}</td>
+                <td>{{this.count}}</td>
+                <td>{{this.name}}</td>
+                <td>{{this.category}}</td>
+                <td> <button type="button" class="btn btn-info details">Details</button>
+
+                    <button type="button" class="btn btn-success completed">Completed</button>
+
+                    <button type="button" class="btn btn-primary sms">SMS</button>
+
+                    <button type="button" class="btn btn-danger remove">Remove</button></td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h5>Upcoming</h5>
+        append rest of schedules + all buttons here
+    </div>
+</div>
+<div class="col-md-12">
+    <h5><strong></strong>Recomended TODO List</strong></h5>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Category</th>
+            </tr>
+        </thead>
+
+
+        <tbody>
+
+            {{#each recomd}}
+            <tr>
+                <td>{{this.count}}</td>
                 <td>{{this.name}}</td>
                 <td>{{this.category}}</td>
                 <td> <button type="button" class="btn btn-info details">Details</button>
@@ -162,6 +200,8 @@
     </table>
 </div>
 <!--add task and friend lookup-->
+
+
 
 <div class="row">
     <div class="col-md-6">
@@ -209,6 +249,10 @@
                             <input type="text" class="form-control" id="deadline">
                         </div>
                         <div class="form-group">
+                            <label for="duration" class="col-form-label">Duration In Minutes</label>
+                            <input type="text" class="form-control" id="duration">
+                        </div>
+                        <div class="form-group">
                             <label for="category" class="col-form-label">Category</label>
                             <select id="category">
 
@@ -248,7 +292,7 @@
             var id = $(this).data("id");
 
             var comp = $(this).data("complete");
-            console.log(comp+"    "+id)
+            console.log(comp + "    " + id)
             if (comp == true) {
                 var newComp = {
                     completed: false
@@ -291,6 +335,7 @@
             var date = new Date;
             var category = $('#category').val().trim();
             var difficulty = $('#difficulty').val().trim();
+            var duration = $('#duration').val().trim();
             var url = "/api/todo";
             var data = {
                 name: name,
@@ -299,6 +344,7 @@
                 deadline: date,
                 category: category,
                 difficulty: difficulty,
+                duration: duration,
                 completed: false
             };
 
@@ -306,7 +352,8 @@
                 type: "POST",
                 url: url,
                 data: data,
+            }).then(function () {
+                location.reload();
             });
-            window.location.reload();
         };
     </script>

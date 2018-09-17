@@ -6,6 +6,7 @@ module.exports = function(sequelize, DataTypes) {
     deadline: DataTypes.DATE,
     category: DataTypes.STRING,
     difficulty: DataTypes.INTEGER,
+    duration: DataTypes.INTEGER,
     completed: DataTypes.BOOLEAN
   });
 
