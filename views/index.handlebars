@@ -1,18 +1,17 @@
-<div class="container">
-  <div class="jumbotron">
+<div class="container" id="#index">
+  <div class="jumbotron jumbo_text">
     <div class="text-center">
-      <h1>Welcome to Robo list</h1>
+      <h1>Robo Planner</h1>
     </div>
     <div class="text-center">
-      Description:A automated to do list
-      <button type="button" class="btn btn-primary">learn more</button>
+      <p>Personal planner powered by machine learning. Accesible on any device anywhere.</p>
     </div>
     <hr>
     <div class="text-center">
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sign_in_modal">
+      <button type="button" class="btn btnh btn-primary" data-toggle="modal" data-target="#sign_in_modal">
         Sign in
       </button>
-      <a class="btn btn-primary button_signin" href="/create" role="button">Create Account</a>
+      <a class="btn btn-primary btnh button_signin" href="/register" role="button">Create Account</a>
     </div>
   </div>
 </div>
@@ -25,23 +24,57 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body modal-backdrop ">
         <div>
-          User name:
-          <input id="user_name">
+          Username
+          <div class="col-sm-3">
+            <input id="user_name">
+          </div>
         </div>
         <div>
-          Password:
-          <input id="password">
+          Password
+          <div class="col-sm-3">
+            <input type="password" id="password">
+          </div>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="signInPage">Sign In</button>
+        <button onClick="login()" type="button" class="btn btn-primary" id="signInPage">Sign In</button>
       </div>
     </div>
   </div>
 </div>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="/js/index.js"></script>
+<script>
+  function login() {
+    var username = $('#user_name').val().trim();
+    var password = $('#password').val().trim();
+
+    var url = '/api/login'
+
+    var data = {
+      username: username,
+      password: password
+    }
+
+    $.ajax({
+      type: "POST",
+      url: url,
+      data: data,
+      success: function (response) {
+        localStorage.setItem('token', response.token);
+        $.ajax('/auth', {
+          type: 'GET',
+          beforeSend: function (xhr) {
+            /* Authorization header */
+            xhr.setRequestHeader("Authorization", "Basic " + localStorage.getItem('token'));
+          },
+          success: function (r) {
+            window.location.href = "/dashboard";
+          },
+        });
+      }
+    })
+  }
+</script>

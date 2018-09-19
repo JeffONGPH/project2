@@ -1,0 +1,61 @@
+<div class="container">
+    <div class="jumbotron jumbo_text">
+        <div class="text-center">
+            <h1>
+                Create Account
+            </h1>
+        </div>
+        <hr>
+        <div class="form">
+            <label>
+                User name:</label>
+            <br>
+            <input id="user_name">
+            <br>
+            <label>
+                Password:</label>
+            <br>
+            <input type="password" id="password">
+            <br>
+            <label>
+                Phone:
+                
+            </label>
+            <br>
+            <input id="phone">
+
+            <hr>
+            <div class="center">
+            <a class="btn btn-secondary" href="/" role="button">Back</a>
+            <button onClick="createAccount()" type="button" class="btn btn-primary" id="createAccount">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function createAccount() {
+        event.preventDefault();
+        var username = $('#user_name').val().trim();
+        var password = $('#password').val().trim();
+        var phone = $('#phone').val().trim();
+        var url = '/api/register'
+
+        var data = {
+            username: username,
+            password: password,
+            phone: phone
+        }
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: data,
+        }).then(function () {
+            window.location.href = "/";
+        });
+    }
+
+
+</script>

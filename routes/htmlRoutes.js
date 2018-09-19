@@ -1,10 +1,11 @@
 var db = require("../models");
 var DecisionTree = require('decision-tree');
 
-
 module.exports = function (app) {
   // Load index page
   app.get("/dashboard", function (req, res) {
+
+
     db.TODO.findAll({}).then(function (dbTODO) {
       var count = 1;
       var count1 = 1;
@@ -134,7 +135,7 @@ module.exports = function (app) {
 
       var class_name = "name";
 
-      var features = ["category", "difficulty"];
+      var features = ["category", "difficulty", "duration"];
 
       var dt = new DecisionTree(training_data, class_name, features);
       var todo = new Array();
@@ -154,17 +155,18 @@ module.exports = function (app) {
             category = 2
           }
           var predicted_class = {
-            count : count1,
+            count: count1,
             id: i + 1,
             name: dt.predict({
               category: category,
-              difficulty: dbTODO[i].difficulty
+              difficulty: dbTODO[i].difficulty,
+              duration: dbTODO[i].duration
             }),
             category: dbTODO[i].category
           };
           recomd.push(predicted_class);
           var toadd = {
-            count : count1,
+            count: count1,
             todo: dbTODO[i]
           };
           todocom.push(toadd);
@@ -180,17 +182,18 @@ module.exports = function (app) {
             category = 2
           }
           var predicted_class = {
-            count : count,
+            count: count,
             id: i + 1,
             name: dt.predict({
               category: category,
-              difficulty: dbTODO[i].difficulty
+              difficulty: dbTODO[i].difficulty,
+              duration: dbTODO[i].duration
             }),
             category: dbTODO[i].category
           };
           recom.push(predicted_class);
           var toadd = {
-            count : count,
+            count: count,
             todo: dbTODO[i]
           };
           todo.push(toadd);
@@ -198,8 +201,8 @@ module.exports = function (app) {
         }
 
       }
-      console.log(recom);
       res.render("dashboard", {
+        layout: "dashboard.handlebars",
         todos: todo,
         todocoms: todocom,
         recom: recom,
@@ -207,27 +210,21 @@ module.exports = function (app) {
       });
     });
   });
-
   app.get("/", function (req, res) {
     db.TODO.findAll({}).then(function (dbTODO) {
-      res.render("index", {
+      res.render("index",  {
+        layout: "front.handlebars",
         todos: dbTODO
       });
     });
   });
 
-  app.get("/create", function (req, res) {
-    res.render("create");
-  })
-  // Load example page and pass in an example by id
-  app.get("/example/:id", function (req, res) {
-    db.Example.findOne({ where: { id: req.params.id } }).then(function (dbExample) {
-      res.render("example", {
-        example: dbExample
-      });
+  app.get("/register", function (req, res) {
+    res.render("register", {
+      layout: "front.handlebars"
     });
-  });
-
+  })
+ 
   // Render 404 page for any unmatched routes
   app.get("*", function (req, res) {
     res.render("404");
